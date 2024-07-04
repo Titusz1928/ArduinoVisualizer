@@ -76,8 +76,8 @@ def bits_to_bytes(input_file):
         print(f"An error occurred: {e}")
 
 
-# Specify the input and output file paths
-input_file = 'static/binfiles/dot.txt'
-
-# Call the function to convert bits to bytes
-bits_to_bytes(input_file)
+# # Specify the input and output file paths
+# input_file = 'static/binfiles/dot.txt'
+#
+# # Call the function to convert bits to bytes
+# bits_to_bytes(input_file)
