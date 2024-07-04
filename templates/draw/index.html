@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Draw!</h1>
+    <canvas id="drawingCanvas" width="128" height="64" style="width: 256px; height: 128px;"></canvas>
+    <br>
+    <button id="saveButton" class="btn btn-info">Save Drawing</button>
+    <button id="toggleModeButton" class="btn btn-light">Toggle Erase</button>
+    <button id="loadImageButton" class="btn btn-secondary">Load Image</button>
+    <input type="file" id="loadImageInput" accept="image/*" style="display:none;" />
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const canvas = document.getElementById("drawingCanvas");
+            const ctx = canvas.getContext("2d");
+
+            // Set initial canvas properties
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = 1;
+            let currentColor = "black"; // Variable to track current drawing color
+
+            let isDrawing = false;
+
+            canvas.addEventListener("mousedown", startDrawing);
+            canvas.addEventListener("mousemove", draw);
+            canvas.addEventListener("mouseup", stopDrawing);
+            canvas.addEventListener("mouseout", stopDrawing);
+
+            function startDrawing(event) {
+                console.log("starting to draw");
+                isDrawing = true;
+                draw(event);
+            }
+
+            function draw(event) {
+                if (!isDrawing) return;
+
+                console.log("drawing...");
+                const rect = canvas.getBoundingClientRect();
+                const x = event.clientX - rect.left;
+                const y = event.clientY - rect.top;
+
+                // Set fill color based on currentColor variable
+                ctx.fillStyle = currentColor;
+                // Draw a filled rectangle at the mouse position
+                ctx.fillRect(Math.floor(x / 2), Math.floor(y / 2), 1, 1);
+            }
+
+            function stopDrawing() {
+                console.log("stopping drawing");
+                isDrawing = false;
+            }
+
+            // Toggle erase mode
+            document.getElementById("toggleModeButton").addEventListener("click", function () {
+                if (currentColor === "black") {
+                    currentColor = "white";
+                    this.textContent = "Toggle Draw";
+                } else {
+                    currentColor = "black";
+                    this.textContent = "Toggle Erase";
+                }
+            });
+
+            // Load an image into the canvas
+            document.getElementById("loadImageButton").addEventListener("click", function () {
+                document.getElementById("loadImageInput").click();
+            });
+
+            document.getElementById("loadImageInput").addEventListener("change", function (event) {
+                const file = event.target.files[0];
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = new Image();
+                    img.onload = function () {
+                        // Draw the loaded image onto the canvas
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    };
+                    img.src = e.target.result;
+                };
+                if (file) {
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            document.getElementById("saveButton").addEventListener("click", function () {
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const bitArray = [];
+
+                for (let y = 0; y < imageData.height; y++) {
+                    for (let x = 0; x < imageData.width; x++) {
+                        const index = (y * imageData.width + x) * 4;
+                        const r = imageData.data[index];
+                        const g = imageData.data[index + 1];
+                        const b = imageData.data[index + 2];
+                        const a = imageData.data[index + 3];
+
+                        // Consider a pixel '0' if it's close to white (ignoring alpha)
+                        if (r > 200 && g > 200 && b > 200) {
+                            bitArray.push(0);
+                        } else {
+                            bitArray.push(1);
+                        }
+                    }
+                }
+
+                // Convert bit array to a string
+                const bitString = bitArray.join("");
+
+                // Send the bitString to the server using fetch
+                fetch('/save-image', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ bitString: bitString }),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Server response:', data);
+                    // Optionally handle response from server
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Handle errors here
+                });
+            });
+        });
+    </script>
+{% endblock %}

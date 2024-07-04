@@ -1,0 +1,12 @@
+
+{% extends 'base.html' %}
+
+{% block content%}
+    <h1>Error!</h1>
+    <p>
+        An error occured! Most likely your arduino board is not connected!
+    </p>
+    <div>
+        <img class="card-img-top" src="{{ url_for('static', filename='images/info.png') }}" alt="info image">
+    </div>
+{% endblock %}

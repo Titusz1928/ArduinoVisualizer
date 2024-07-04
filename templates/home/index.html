@@ -1,0 +1,18 @@
+
+{% extends 'base.html' %}
+
+{% block content%}
+    <h1>Welcome!</h1>
+    <p>
+        I created this website to visuaize the data from a 1KB (1024 bytes) Arduino Uno EEPROM. As a first step I will implement images with only two colors. Each byte can store the values of 8 pixels, that means 8*1024=8192 pixels which we can display in 64 rows and 128 columns. Later I will probably add multicolor (around 4) images but then I will need to reduce the number of pixels.
+    </p>
+
+    <div class="card" style="width: 18rem;">
+      <img class="card-img-top" src="{{ url_for('static', filename='images/arduino.png') }}" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">Arduino UNO</h5>
+        <p class="card-text">The Arduino Uno is an open-source microcontroller board based on the Microchip ATmega328P microcontroller (MCU) and developed by Arduino.cc and initially released in 2010.</p>
+        <a href="https://en.wikipedia.org/wiki/Arduino_Uno" class="btn btn-primary">More information</a>
+      </div>
+    </div>
+{% endblock %}

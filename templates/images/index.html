@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1> Images</h1>
+    <form action="{{ url_for('load_arduino_image') }}" method="get">
+        <button type="submit" class="btn btn-info">Load Arduino Data</button>
+    </form>
+
+    {% if image_name %}
+        <h2>Image</h2>
+        <p>Image name: {{ image_name }}</p>
+        <img src="{{ url_for('static', filename='images/drawings/' ~ image_name) }}" alt="Image">
+    {% else %}
+        <p>No image loaded.</p>
+    {% endif %}
+
+     <h2>Existing Images</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Image Name</th>
+                <th>Generated Date</th>
+                <th>Display</th>
+                <th>Save to Arduino</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for image, timestamp in image_files %}
+                <tr class="image_rows">
+                    <td>
+                        <a href="{{ url_for('images', image_name=image) }}">{{ image }}</a>
+                    </td>
+                    <td>{{ timestamp }}</td>
+                    <td>
+                        <form action="{{ url_for('images') }}" method="get">
+                            <input type="hidden" name="image_name" value="{{ image }}">
+                            <button type="submit" class="btn btn-light">Display</button>
+                        </form>
+                    </td>
+                                        <td>
+                        <form action="{{ url_for('save_to_arduino') }}" method="get">
+                            <input type="hidden" name="image_name" value="{{ image }}">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
