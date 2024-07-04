@@ -1,17 +1,38 @@
-To run this project you need:
-  -an arduino board
-  -Arduino IDE
-  -Python IDE ( I used pycharm)
+Project Requirements
+To run this project, you will need the following:
 
-1. First upload the arduino script to the arduino
-2. Create the python enviroment with the help of the requirements.txt
-3. Start the server with: flask --app server run --host=0.0.0.0 --debugger --port 4000
-4. Go to the url
+An Arduino board
+Arduino IDE
+Python IDE (e.g., PyCharm)
+Getting Started
+Upload Arduino Script:
 
-Help:
-The operations with the arduino will take a considerable amount of time (you can probably speed it up, I just wanted to make sure it works), every operation ending will be signaled with a led blink, if you dont have a led you can disable the function.
-If you want to delete/rename a file make sure to do that with all 3 files:
-  /static/images/drawings/example.pmg
-  /static/binfiles/example.txt
-  /static/decfiles/example.txt
-If the message "An error occurred: [Errno 2] No such file or directory: '../binfiles/drawing.txt'" appears when starting the server dont worry, it is not an issue but i dont know why it appears
+First, upload the Arduino script to your Arduino board using the Arduino IDE.
+Create Python Environment:
+
+Set up the Python environment by installing the required packages listed in requirements.txt.
+bash
+Copy code
+pip install -r requirements.txt
+Start the Server:
+
+Launch the Flask server using the following command:
+bash
+Copy code
+flask --app server run --host=0.0.0.0 --debugger --port 4000
+Access the Application:
+
+Navigate to the provided URL to access the application.
+Helpful Tips
+Arduino Operations: Operations involving the Arduino may take some time. You can disable LED notifications if you do not have an LED available.
+
+File Management:
+
+When deleting or renaming files, ensure that you manage all three related files:
+/static/images/drawings/example.png
+/static/binfiles/example.txt
+/static/decfiles/example.txt
+Error Handling:
+
+If you see the message "An error occurred: [Errno 2] No such file or directory: '../binfiles/drawing.txt'" when starting the server, it is not a critical issue but may require investigation to resolve.
+
