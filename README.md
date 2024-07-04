@@ -1,38 +1,50 @@
-Project Requirements
-To run this project, you will need the following:
+# Arduino Image Visualizer
 
-An Arduino board
-Arduino IDE
-Python IDE (e.g., PyCharm)
-Getting Started
-Upload Arduino Script:
+## Introduction
+This project provides a web-based interface to visualize images on an Arduino board. It allows you to upload images, convert them into binary formats compatible with Arduino EEPROM, and send them to the board for display.
 
-First, upload the Arduino script to your Arduino board using the Arduino IDE.
-Create Python Environment:
+## Prerequisites
+To run this project, you need the following:
 
-Set up the Python environment by installing the required packages listed in requirements.txt.
-bash
-Copy code
-pip install -r requirements.txt
-Start the Server:
+- An Arduino board
+- Arduino IDE
+- Python IDE (e.g., PyCharm)
 
-Launch the Flask server using the following command:
-bash
-Copy code
-flask --app server run --host=0.0.0.0 --debugger --port 4000
-Access the Application:
+## Setup Instructions
+1. **Upload Arduino Script**:
+   - Upload the Arduino script provided (`arduino_file.ino`) to your Arduino board using the Arduino IDE.
 
-Navigate to the provided URL to access the application.
-Helpful Tips
-Arduino Operations: Operations involving the Arduino may take some time. You can disable LED notifications if you do not have an LED available.
+2. **Set Up Python Environment**:
+   - Create a Python virtual environment using the `requirements.txt` file provided:
 
-File Management:
+     ```bash
+     python -m venv venv
+     source venv/bin/activate  # For Linux/macOS
+     venv\Scripts\activate      # For Windows
+     pip install -r requirements.txt
+     ```
 
-When deleting or renaming files, ensure that you manage all three related files:
-/static/images/drawings/example.png
-/static/binfiles/example.txt
-/static/decfiles/example.txt
-Error Handling:
+3. **Start the Server**:
+   - Start the Flask server by running the following command:
 
-If you see the message "An error occurred: [Errno 2] No such file or directory: '../binfiles/drawing.txt'" when starting the server, it is not a critical issue but may require investigation to resolve.
+     ```bash
+     flask --app server run --host=0.0.0.0 --debugger --port 4000
+     ```
 
+4. **Access the Application**:
+   - Open a web browser and navigate to [http://localhost:4000](http://localhost:4000) to access the application.
+   - Or access it through other devices with the other link.
+
+## Usage Notes
+- **Arduino Operations**: Operations involving the Arduino may take a considerable amount of time. Each operation completion is signaled with an LED blink.
+- **LED Functionality**: If you don't have an LED, you can disable the LED function in the Arduino script.
+- **File Management**: When deleting or renaming files, ensure you update all related files:
+  - `/static/images/drawings/example.png`
+  - `/static/binfiles/example.txt`
+  - `/static/decfiles/example.txt`
+
+## Troubleshooting
+- If the message "An error occurred: [Errno 2] No such file or directory: '../binfiles/drawing.txt'" appears when starting the server, it's not critical but may require investigation.
+
+## Contributions
+Contributions and improvements to this project are welcome. Please fork the repository, make your changes, and submit a pull request.
